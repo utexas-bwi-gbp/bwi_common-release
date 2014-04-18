@@ -1,0 +1,18 @@
+ros-hydro-bwi-common (0.2.1-0quantal) quantal; urgency=high
+
+  * Move ``bwi_planning_common`` here from the ``bwi_planning``
+    repository (bwi_planning#1 <https://github.com/utexas-bwi/bwi_planning/issues/1>).
+
+ -- Piyush Khandelwal <piyushk@gmail.com>  Fri, 18 Apr 2014 05:00:00 -0000
+
+ros-hydro-bwi-common (0.2.0-0quantal) quantal; urgency=high
+
+  * Initial release to Hydro.
+  * Now passes catkin_lint checks.
+  * Added missing dependency in metapackage.
+  * Moved common research components from bwi_experimental to bwi_common
+    repository in preparation of release.
+
+ -- Piyush Khandelwal <piyushk@gmail.com>  Wed, 16 Apr 2014 05:00:00 -0000
+
+

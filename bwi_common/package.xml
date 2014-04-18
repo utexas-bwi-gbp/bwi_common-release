@@ -1,0 +1,24 @@
+<package>
+  <name>bwi_common</name>
+  <version>0.2.0</version>
+  <description>
+    Common Components used in the BWI Project at the University of Texas at
+    Austin
+  </description> 
+  <license>BSD</license>
+
+  <author email="piyushk@gmail.com">Piyush Khandelwal</author>
+  <maintainer email="piyushk@gmail.com">Piyush Khandelwal</maintainer>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <run_depend>bwi_mapper</run_depend>
+  <run_depend>bwi_gazebo_entities</run_depend>
+  <run_depend>bwi_tools</run_depend>
+  <run_depend>utexas_gdc</run_depend>
+
+  <export>
+    <metapackage/>
+  </export>
+
+</package>

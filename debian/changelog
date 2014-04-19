@@ -1,0 +1,24 @@
+ros-hydro-bwi-gazebo-entities (0.2.2-0precise) precise; urgency=high
+
+
+
+ -- Piyush Khandelwal <piyushk@gmail.com>  Sat, 19 Apr 2014 05:00:00 -0000
+
+ros-hydro-bwi-gazebo-entities (0.2.1-0precise) precise; urgency=high
+
+
+
+ -- Piyush Khandelwal <piyushk@gmail.com>  Fri, 18 Apr 2014 05:00:00 -0000
+
+ros-hydro-bwi-gazebo-entities (0.2.0-0precise) precise; urgency=high
+
+  * Initial release to Hydro.
+  * Changed person color to black for easy visualization.
+  * Added a vizualizer for gazebo.
+  * Now passes catkin_lint checks.
+  * Moved common research components from bwi_experimental to bwi_common
+    repository in preparation of release.
+
+ -- Piyush Khandelwal <piyushk@gmail.com>  Wed, 16 Apr 2014 05:00:00 -0000
+
+

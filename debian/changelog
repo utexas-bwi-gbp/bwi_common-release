@@ -1,0 +1,27 @@
+ros-hydro-bwi-mapper (0.2.2-0precise) precise; urgency=high
+
+
+
+ -- Piyush Khandelwal <piyushk@gmail.com>  Sat, 19 Apr 2014 05:00:00 -0000
+
+ros-hydro-bwi-mapper (0.2.1-0precise) precise; urgency=high
+
+
+
+ -- Piyush Khandelwal <piyushk@gmail.com>  Fri, 18 Apr 2014 05:00:00 -0000
+
+ros-hydro-bwi-mapper (0.2.0-0precise) precise; urgency=high
+
+  * Initial release to Hydro.
+  * Now passes catkin_lint checks.
+  * Added new image configuration files.
+  * Minor commits while improving the quality of images.
+  * Updated drawing functions a bit.
+  * Fixed bug in new convenience function call.
+  * Added convenience function. expand legend automatically.
+  * Added bwi_mapper to common components, as it is used by both
+    planning and human guidance projects.
+
+ -- Piyush Khandelwal <piyushk@gmail.com>  Wed, 16 Apr 2014 05:00:00 -0000
+
+

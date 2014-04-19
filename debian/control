@@ -1,0 +1,12 @@
+Source: ros-hydro-utexas-gdc
+Section: misc
+Priority: extra
+Maintainer: Piyush Khandelwal <piyushk@gmail.com>
+Build-Depends: debhelper (>= 7.0.50~), ros-hydro-catkin, ros-hydro-roslaunch
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-hydro-utexas-gdc
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-hydro-bwi-gazebo-entities, ros-hydro-gazebo-ros, ros-hydro-map-server
+Description: Simulation environment for the Gates Dell Complex of the University of Texas At Austin

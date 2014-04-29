@@ -1,3 +1,29 @@
+## bwi_common (hydro) - 0.2.4-0
+
+The packages in the `bwi_common` repository were released into the `hydro` distro by running `/usr/bin/bloom-release -r hydro -t hydro bwi_common --edit` on `Tue, 29 Apr 2014 19:47:14 -0000`
+
+These packages were released:
+- `bwi_common`
+- `bwi_gazebo_entities`
+- `bwi_mapper`
+- `bwi_planning_common`
+- `bwi_tools`
+- `bwi_web`
+- `utexas_gdc`
+
+Version of package(s) in repository `bwi_common`:
+- rosdistro version: `0.2.3-0`
+- old version: `0.2.3-0`
+- new version: `0.2.4-0`
+
+Versions of tools used:
+- bloom version: `0.5.4`
+- catkin_pkg version: `0.1.27`
+- rosdep version: `0.10.25`
+- rosdistro version: `0.3.4`
+- vcstools version: `0.1.33`
+
+
 ## bwi_common (hydro) - 0.2.3-0
 
 The packages in the `bwi_common` repository were released into the `hydro` distro by running `/usr/bin/bloom-release bwi_common -r hydro -t hydro` on `Thu, 24 Apr 2014 23:27:37 -0000`

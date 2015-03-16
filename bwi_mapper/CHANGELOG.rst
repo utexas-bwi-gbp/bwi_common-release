@@ -1,0 +1,34 @@
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Changelog for package bwi_mapper
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+0.2.4 (2014-04-29)
+------------------
+* cleaned up most catkin_lint warnings. closes `#6
+  <https://github.com/utexas-bwi/bwi_common/issues/6>`_
+* Added support for YAML-CPP 0.5+.  The new yaml-cpp API removes the
+  "node >> outputvar;" operator, and it has a new way of loading
+  documents.
+* Contributors: Piyush Khandelwal, Scott K Logan
+
+0.2.3 (2014-04-24)
+------------------
+
+0.2.2 (2014-04-19)
+------------------
+
+0.2.1 (2014-04-18)
+------------------
+
+0.2.0 (2014-04-16)
+------------------
+
+* Initial release to Hydro.
+* Now passes catkin_lint checks.
+* Added new image configuration files.
+* Minor commits while improving the quality of images.
+* Updated drawing functions a bit.
+* Fixed bug in new convenience function call.
+* Added convenience function. expand legend automatically.
+* Added bwi_mapper to common components, as it is used by both
+  planning and human guidance projects.

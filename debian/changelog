@@ -1,0 +1,16 @@
+ros-hydro-bwi-tasks (0.3.1-0quantal) quantal; urgency=high
+
+
+
+ -- Piyush Khandelwal <piyushk@gmail.com>  Mon, 16 Mar 2015 05:00:00 -0000
+
+ros-hydro-bwi-tasks (0.3.0-0quantal) quantal; urgency=high
+
+  * fix many catkin lint errors
+    For remaining error, see #13 <https://github.com/utexas-bwi/bwi_common/issues/13>
+  * Initial release - moved bwi_tasks into bwi_common
+  * Contributors: Jack O'Quin, Piyush Khandelwal
+
+ -- Piyush Khandelwal <piyushk@gmail.com>  Sun, 15 Mar 2015 05:00:00 -0000
+
+

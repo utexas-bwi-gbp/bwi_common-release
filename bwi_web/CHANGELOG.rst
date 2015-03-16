@@ -2,6 +2,14 @@
 Changelog for package bwi_web
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.3.1 (2015-03-16)
+------------------
+
+0.3.0 (2015-03-15)
+------------------
+* fix many catkin lint errors
+* Contributors: Jack O'Quin
+
 0.2.4 (2014-04-29)
 ------------------
 * cleaned up most catkin_lint warnings. closes `#6

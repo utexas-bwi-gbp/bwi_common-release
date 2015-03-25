@@ -1,0 +1,12 @@
+Source: ros-hydro-bwi-gazebo-entities
+Section: misc
+Priority: extra
+Maintainer: Piyush Khandelwal <piyushk@gmail.com>
+Build-Depends: debhelper (>= 9.0.0), ros-hydro-catkin, ros-hydro-roslaunch
+Homepage: http://ros.org/wiki/bwi_gazebo_entities
+Standards-Version: 3.9.2
+
+Package: ros-hydro-bwi-gazebo-entities
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-hydro-gazebo-ros, ros-hydro-xacro
+Description: Simulation objects and avatars used in experiments.

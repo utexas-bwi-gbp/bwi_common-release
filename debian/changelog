@@ -1,0 +1,31 @@
+ros-indigo-bwi-msgs (0.3.3-0saucy) saucy; urgency=high
+
+  * stop_base: another unit test (#23 <https://github.com/utexas-bwi/bwi_common/issues/23>, utexas-bwi/segbot#41 <https://github.com/utexas-bwi/segbot/issues/41>)
+  * bwi_msgs: rename stop base service (#23 <https://github.com/utexas-bwi/bwi_common/issues/23>, utexas-bwi/segbot#41 <https://github.com/utexas-bwi/segbot/issues/41>)
+  * stop_base: initial stop base implementation (#23 <https://github.com/utexas-bwi/bwi_common/issues/23>, utexas-bwi/segbot#41 <https://github.com/utexas-bwi/segbot/issues/41>)
+  * bwi_msgs: add stop base controller interface (utexas-bwi/segbot#41 <https://github.com/utexas-bwi/segbot/issues/41>)
+  * added a multi robot msg in preparation for multirobot experiments.
+  * Contributors: Jack O'Quin, Piyush Khandelwal
+
+ -- Piyush Khandelwal <piyushk@gmail.com>  Wed, 05 Aug 2015 05:00:00 -0000
+
+ros-indigo-bwi-msgs (0.3.2-0saucy) saucy; urgency=high
+
+
+
+ -- Piyush Khandelwal <piyushk@gmail.com>  Tue, 24 Mar 2015 05:00:00 -0000
+
+ros-indigo-bwi-msgs (0.3.1-0saucy) saucy; urgency=high
+
+
+
+ -- Piyush Khandelwal <piyushk@gmail.com>  Mon, 16 Mar 2015 05:00:00 -0000
+
+ros-indigo-bwi-msgs (0.3.0-0saucy) saucy; urgency=high
+
+  * Initial release of package. It's purpose is to avoid circular dependencies due to messages. see #15 <https://github.com/utexas-bwi/bwi_common/issues/15>.
+  * Contributors: Piyush Khandelwal
+
+ -- Piyush Khandelwal <piyushk@gmail.com>  Sun, 15 Mar 2015 05:00:00 -0000
+
+

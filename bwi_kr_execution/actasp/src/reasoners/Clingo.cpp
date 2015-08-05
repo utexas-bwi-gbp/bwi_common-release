@@ -15,11 +15,13 @@
 #include <algorithm>
 #include <fstream>
 #include <cmath> //for floor
+#include <boost/graph/graph_concepts.hpp>
 
-#include <iostream>
+//#include <iostream>
+#include <ros/console.h>
 #include <ctime>
 
-#define CURRENT_FILE_HOME std::string("/tmp/")
+#define CURRENT_FILE_HOME std::string("/tmp/") // was  queryDir, but this doesn't work with the RemoteReasoner at the moment
 #define CURRENT_STATE_FILE std::string("current.asp")
 
 using namespace std;
@@ -56,9 +58,15 @@ Clingo::Clingo(unsigned int max_n,
     this->domainDir += "/";
 
   //TODO test the existance of the directories
+  
+  //create current file
+  ifstream currentFile((CURRENT_FILE_HOME + CURRENT_STATE_FILE).c_str());
+  if(!currentFile.good()) //doesn't exist, create it or clingo will go mad
+    reset();
+  currentFile.close();
 
   stringstream filterStream;
-  filterStream << "#hide." << endl;
+  //filterStream << "#hide." << endl;
 
   std::set<AspFluent>::const_iterator actIt = allActions.begin();
   for (; actIt != allActions.end(); ++actIt) {
@@ -143,15 +151,18 @@ static std::list<actasp::AnswerSet> readAnswerSets(const std::string& filePath) 
   ifstream file(filePath.c_str());
 
   list<AnswerSet> allSets;
-  bool answerFound = false;
-
+  bool interrupted = false;
+  
   string line;
   while(file) {
 
     getline(file,line);
 
-    if(answerFound && line == "UNSATISFIABLE")
+    if(line == "UNSATISFIABLE" || line == "UNKNOWN")
       return list<AnswerSet>();
+    
+    if((line.find("INTERRUPTED") != string::npos) || (line.find("KILLED") != string::npos) )
+      interrupted = true;
 
     if(line.find("Answer") != string::npos) {
       getline(file,line);
@@ -163,7 +174,10 @@ static std::list<actasp::AnswerSet> readAnswerSets(const std::string& filePath) 
         }
     }
   }
-
+  
+  if(interrupted) //the last answer set might be invalid
+    allSets.pop_back();
+  
  return allSets;
 }
 
@@ -182,6 +196,7 @@ std::list<actasp::AnswerSet> Clingo::krQuery(const std::string& query,
   string queryPath = queryDir + fileName;
 
   ofstream queryFile(queryPath.c_str());
+  queryFile << "#program base." << endl;
   queryFile << query << endl;
   queryFile.close();
 
@@ -190,14 +205,13 @@ std::list<actasp::AnswerSet> Clingo::krQuery(const std::string& query,
   const string outputFilePath = queryDir + "query_output.txt";
 
   if (max_time > 0) {
-    commandLine << "timeout " << max_time << " ";
+    commandLine << "timeout -k 1 " << max_time << " ";
   }
 
   stringstream iterations;
-  iterations << "--imin=" << initialTimeStep << " --imax=" << finalTimeStep;
+  iterations << "-c imin=" << initialTimeStep-1 << " -c iquery=" << initialTimeStep-1 << " -c imax=" << finalTimeStep;
 
-  commandLine << "iclingo " << iterations.str() << " " << queryPath << " " << domainDir << "*.asp " << (CURRENT_FILE_HOME + CURRENT_STATE_FILE) << " > " << outputFilePath << " " << answerSetsNumber;
-
+  commandLine << "clingo " << iterations.str() << " " << queryPath << " " << domainDir << "*.asp " << (CURRENT_FILE_HOME + CURRENT_STATE_FILE) << " > " << outputFilePath << " " << answerSetsNumber;
 
   if (!system(commandLine.str().c_str())) {
     //maybe do something here, or just kill the warning about the return value not being used.
@@ -207,12 +221,19 @@ std::list<actasp::AnswerSet> Clingo::krQuery(const std::string& query,
 
 }
 
-string Clingo::generatePlanQuery(const std::vector<actasp::AspRule>& goalRules,
+string Clingo::generatePlanQuery(std::vector<actasp::AspRule> goalRules,
                                  bool filterActions = true) const throw() {
   stringstream goal;
-  goal << "#volatile " << incrementalVar << "." << endl;
-  //I don't like this -1 too much, but it makes up for the incremental variable starting at 1
-  goal << aspString(goalRules,incrementalVar+"-1") << endl;
+  goal << "#program volatile(" << incrementalVar << ")." << endl;
+  goal << "#external query(" << incrementalVar << ")." << endl;
+
+  std::vector<actasp::AspRule>::iterator ruleIt = goalRules.begin();
+  AspFluent query("query(n)");
+  for (; ruleIt != goalRules.end(); ++ruleIt) {
+    (*ruleIt).body.push_back(query);
+  }
+
+  goal << aspString(goalRules,incrementalVar) << endl;
 
   if (filterActions)
     goal << actionFilter;
@@ -418,7 +439,7 @@ MultiPolicy Clingo::computePolicy(const std::vector<actasp::AspRule>& goal, doub
   clock_t kr1_begin = clock();
   list<AnswerSet> firstAnswerSets = krQuery(query,1,max_n,"planQuery.asp",0);
   clock_t kr1_end = clock();
-  cout << "The first kr call took " << (double(kr1_end - kr1_begin) / CLOCKS_PER_SEC) << " seconds" << endl;
+//   cout << "The first kr call took " << (double(kr1_end - kr1_begin) / CLOCKS_PER_SEC) << " seconds" << endl;
 
   MultiPolicy policy(allActions);
 
@@ -429,7 +450,7 @@ MultiPolicy Clingo::computePolicy(const std::vector<actasp::AspRule>& goal, doub
 
   for_each(firstAnswerSets.begin(),firstAnswerSets.end(),PolicyMerger(policy));
 
-  int maxLength = floor(suboptimality * shortestLength);
+  int maxLength = ceil(suboptimality * shortestLength);
 
   if (maxLength == shortestLength)
     return policy;
@@ -445,7 +466,7 @@ MultiPolicy Clingo::computePolicy(const std::vector<actasp::AspRule>& goal, doub
   clock_t kr2_begin = clock();
   list<AnswerSet> answerSets = krQuery(query,maxLength,maxLength,"planQuery.asp",0);
   clock_t kr2_end = clock();
-  cout << "The second kr call took " << (double(kr2_end - kr2_begin) / CLOCKS_PER_SEC) << " seconds" << endl;
+//   cout << "The second kr call took " << (double(kr2_end - kr2_begin) / CLOCKS_PER_SEC) << " seconds" << endl;
 
   //skip the minimial plans
   list<AnswerSet>::iterator currentFirst = find_if(answerSets.begin(),answerSets.end(),PlanLongerThan(answerSets.begin()->maxTimeStep()));
@@ -473,13 +494,17 @@ MultiPolicy Clingo::computePolicy(const std::vector<actasp::AspRule>& goal, doub
   }
   clock_t filter_end = clock();
 
+
+  stringstream planStream;
+  planStream << "Accepted plans: " << endl;
   set< list <AspFluentRef>, LexComparator >::const_iterator printIt = goodPlans.begin();
   for (; printIt != goodPlans.end(); ++printIt) {
-    copy(printIt->begin(),printIt->end(),ostream_iterator<string>(cout, " "));
-    cout << endl;
+    copy(printIt->begin(),printIt->end(),ostream_iterator<string>(planStream, " "));
+    planStream << endl;
   }
-
-  cout << "filtering took " << (double(filter_end - filter_begin) / CLOCKS_PER_SEC) << " seconds" << endl;
+  ROS_INFO_STREAM(planStream.str());
+//   
+//   cout << "filtering took " << (double(filter_end - filter_begin) / CLOCKS_PER_SEC) << " seconds" << endl;
 
 
   return policy;
@@ -520,9 +545,10 @@ std::vector< AnswerSet > Clingo::computeAllPlans(const std::vector<actasp::AspRu
   //when actions are filtered and there are not state fluents,
   //the last time step is of the last action, and actions start at
   //zero, so we need +1
-  unsigned int shortestLength = firstAnswerSets.begin()->maxTimeStep()+1;
+  //^not true for clingo 4
+  unsigned int shortestLength = firstAnswerSets.begin()->maxTimeStep();
 
-  int maxLength = floor(suboptimality * shortestLength);
+  int maxLength = ceil(suboptimality * shortestLength);
 
   if (maxLength == shortestLength)
     return vector<AnswerSet>(firstAnswerSets.begin(), firstAnswerSets.end());
@@ -560,14 +586,14 @@ std::vector< AnswerSet > Clingo::computeAllPlans(const std::vector<actasp::AspRu
   }
 
   vector<AnswerSet> finalVector(goodPointers.begin(),goodPointers.end());
-
-  cout << "  ---  good plans ---" << endl;
-  vector< AnswerSet>::const_iterator printIt = finalVector.begin();
-  for (; printIt != finalVector.end(); ++printIt) {
-    copy(printIt->getFluents().begin(),printIt->getFluents().end(),ostream_iterator<string>(cout, " "));
-    cout << endl;
-  }
-  cout << " ---- " << endl;
+  
+//   cout << "  ---  good plans ---" << endl;
+//   vector< AnswerSet>::const_iterator printIt = finalVector.begin();
+//   for (; printIt != finalVector.end(); ++printIt) {
+//     copy(printIt->getFluents().begin(),printIt->getFluents().end(),ostream_iterator<string>(cout, " "));
+//     cout << endl;
+//   }
+//   cout << " ---- " << endl;
 
   return finalVector;
 
@@ -577,25 +603,41 @@ std::vector< AnswerSet > Clingo::computeAllPlans(const std::vector<actasp::AspRu
 
 bool Clingo::isPlanValid(const AnswerSet& plan, const std::vector<actasp::AspRule>& goal)  const throw() {
 
+//   clock_t kr1_begin = clock();
 
   string planQuery = generatePlanQuery(goal);
 
   stringstream monitorQuery(planQuery, ios_base::app | ios_base::out);
 
+  monitorQuery << "#program plan(" << incrementalVar << ")." << endl;
+
   const AnswerSet::FluentSet &allActions = plan.getFluents();
   AnswerSet::FluentSet::const_iterator actionIt = allActions.begin();
 
-  for (int i=0; actionIt != allActions.end(); ++actionIt, ++i)
+  for (int i=1; actionIt != allActions.end(); ++actionIt, ++i)
     monitorQuery << actionIt->toString(i) << "." << endl;
 
-  return !(krQuery(monitorQuery.str(),plan.getFluents().size(),plan.getFluents().size(),"monitorQuery.asp").empty());
+  bool valid = krQuery(monitorQuery.str(),plan.getFluents().size(),plan.getFluents().size(),"monitorQuery.asp").empty();
+//   clock_t kr1_end = clock();
+//   cout << "Verifying plan time: " << (double(kr1_end - kr1_begin) / CLOCKS_PER_SEC) << " seconds" << endl;
+
+  return !valid; 
 }
 
 AnswerSet Clingo::currentStateQuery(const std::vector<actasp::AspRule>& query) const throw() {
+  //ROS_INFO("current state query.\n");
 
   list<AnswerSet> sets = krQuery(aspString(query,0),0,0,"stateQuery.asp");
 
-  return (sets.empty())? AnswerSet() : *(sets.begin());
+  if (sets.empty()) {
+    return AnswerSet();
+  } else {
+    std::set<actasp::AspFluent> currentFluents = (sets.begin())->getFluentsAtTime(0);
+    return AnswerSet(currentFluents.begin(), currentFluents.end());
+  }
+
+
+  //return (sets.empty())? AnswerSet() : *(sets.begin());
 }
 
 static AspRule fluent2Rule(const AspFluent& fluent) {
@@ -614,8 +656,8 @@ bool Clingo::updateFluents(const std::vector<actasp::AspFluent> &observations) t
 
   stringstream queryStream(aspString(obsRules,1), ios_base::app | ios_base::out);
 
-  queryStream << "noop(0)." << endl;
-  queryStream << "#hide noop/1." << endl;
+  queryStream << "noop(1)." << endl;
+  //queryStream << "#hide noop/1." << endl;
 
   list<AnswerSet> currentState = krQuery(queryStream.str(),1,1,"observationQuery.asp");
 
@@ -658,14 +700,14 @@ std::list< std::list<AspAtom> > Clingo::query(const std::string &queryString, un
   const string outputFilePath = queryDir + "query_output.txt";
 
   if (max_time > 0) {
-    commandLine << "timeout " << max_time << " ";
+    commandLine << "timeout -k 1 " << max_time << " ";
   }
 
   stringstream iterations;
-  iterations << "--imin=" << initialTimeStep << " --imax=" << finalTimeStep;
+  iterations << "-c imin=" << initialTimeStep-1 << " -c iquery=" << initialTimeStep-1 << " -c imax=" << finalTimeStep;
 
 
-  commandLine << "iclingo " << iterations.str() << " " << domainDir <<  "*.asp " << " " << (CURRENT_FILE_HOME + CURRENT_STATE_FILE) << " " << queryPath <<  " > " << outputFilePath << " 0";
+  commandLine << "clingo " << iterations.str() << " " << domainDir <<  "*.asp " << " " << (CURRENT_FILE_HOME + CURRENT_STATE_FILE) << " " << queryPath <<  " > " << outputFilePath << " 0";
 
 
   if (!system(commandLine.str().c_str())) {

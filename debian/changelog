@@ -1,0 +1,36 @@
+ros-indigo-bwi-tasks (0.3.3-0trusty) trusty; urgency=high
+
+  * fixed the ASP for the meeting experiment
+  * PRL experiment
+  * adding a task for experiments in simulation
+  * adding a task for learning experiment, and a flag to the action
+    theory to prevent the use of questions in tasks that don't need them
+  * adding time to the logging of actions and reward.
+  * fixing issue #20 <https://github.com/utexas-bwi/bwi_common/issues/20>
+  * removed take_human_input.py and switched to bwi_msgs service. closes #20 <https://github.com/utexas-bwi/bwi_common/issues/20>
+  * Contributors: Matteo Leonetti, Shiqi Zhang
+
+ -- Piyush Khandelwal <piyushk@gmail.com>  Wed, 05 Aug 2015 05:00:00 -0000
+
+ros-indigo-bwi-tasks (0.3.2-0trusty) trusty; urgency=high
+
+
+
+ -- Piyush Khandelwal <piyushk@gmail.com>  Tue, 24 Mar 2015 05:00:00 -0000
+
+ros-indigo-bwi-tasks (0.3.1-0trusty) trusty; urgency=high
+
+
+
+ -- Piyush Khandelwal <piyushk@gmail.com>  Mon, 16 Mar 2015 05:00:00 -0000
+
+ros-indigo-bwi-tasks (0.3.0-0trusty) trusty; urgency=high
+
+  * fix many catkin lint errors
+    For remaining error, see #13 <https://github.com/utexas-bwi/bwi_common/issues/13>
+  * Initial release - moved bwi_tasks into bwi_common
+  * Contributors: Jack O'Quin, Piyush Khandelwal
+
+ -- Piyush Khandelwal <piyushk@gmail.com>  Sun, 15 Mar 2015 05:00:00 -0000
+
+

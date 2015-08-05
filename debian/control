@@ -1,0 +1,12 @@
+Source: ros-indigo-bwi-logging
+Section: misc
+Priority: extra
+Maintainer: Shiqi Zhang <shiqi.zhang6@gmail.com>
+Build-Depends: debhelper (>= 9.0.0), libboost-all-dev, ros-indigo-catkin, ros-indigo-cv-bridge, ros-indigo-geometry-msgs, ros-indigo-message-filters, ros-indigo-nav-msgs, ros-indigo-roscpp, ros-indigo-sensor-msgs
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-indigo-bwi-logging
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-indigo-cv-bridge, ros-indigo-geometry-msgs, ros-indigo-message-filters, ros-indigo-nav-msgs, ros-indigo-rosbag, ros-indigo-roscpp, ros-indigo-rospy, ros-indigo-sensor-msgs
+Description: Logging package that creates ROS bag files

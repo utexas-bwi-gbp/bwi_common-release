@@ -3,9 +3,10 @@
 #include "RemoteReasoner.h"
 #include "StaticFacts.h"
 
-#include "learning/QLearningActionSelector.h"
+#include "learning/SarsaActionSelector.h"
 #include "learning/TimeReward.h"
 #include "learning/DefaultTimes.h"
+#include "learning/ActionLogger.h"
 
 #include "bwi_kr_execution/ExecutePlanAction.h"
 
@@ -26,9 +27,11 @@
 
 #include <string>
 #include <fstream>
+#include <ctime>
 
 const int MAX_N = 20;
 const std::string queryDirectory("/tmp/bwi_action_execution/");
+const std::string value_directory_base("/var/tmp/bwi_action_execution/");
 std::string valueDirectory;
 
 
@@ -38,9 +41,9 @@ using namespace actasp;
 
 typedef actionlib::SimpleActionServer<bwi_kr_execution::ExecutePlanAction> Server;
 
-
 ActionExecutor *executor;
-QLearningActionSelector *selector;
+SarsaActionSelector *selector;
+ActionLogger *action_logger;
 
 struct PrintFluent {
 
@@ -104,74 +107,119 @@ std::string rulesToFileName(const vector<AspRule> &rules) {
   return valueDirectory + ruleString.str();
 }
 
-void executePlan(const bwi_kr_execution::ExecutePlanGoalConstPtr& plan, Server* as) {
 
-  vector<AspRule> goalRules;
-
-  transform(plan->aspGoal.begin(),plan->aspGoal.end(),back_inserter(goalRules),TranslateRule());
-
-  string valueFileName = rulesToFileName(goalRules);
-  ifstream valueFileIn(valueFileName.c_str());
-  selector->readFrom(valueFileIn);
-  valueFileIn.close();
-
-  executor->setGoal(goalRules);
-
-  ros::Rate loop(10);
-
-  while (!executor->goalReached() && !executor->failed() && ros::ok()) {
-
-    if (!as->isPreemptRequested()) {
-      executor->executeActionStep();
-    } else {
-      if (as->isNewGoalAvailable()) {
-
-        ofstream newValueFileOut(valueFileName.c_str());
-        selector->writeTo(newValueFileOut);
-        newValueFileOut.close();
-
-        goalRules.clear();
-        const bwi_kr_execution::ExecutePlanGoalConstPtr& newGoal = as->acceptNewGoal();
-        transform(newGoal->aspGoal.begin(),newGoal->aspGoal.end(),back_inserter(goalRules),TranslateRule());
-
-        valueFileName = rulesToFileName(goalRules);
-        ifstream newValueFileIn(valueFileName.c_str());
-        selector->readFrom(newValueFileIn);
-        newValueFileIn.close();
-
-        executor->setGoal(goalRules);
-        selector->episodeEnded();
-      }
-    }
-    loop.sleep();
-  }
-
+void completeTask(const string& valueFileName, const ros::Time& begin, const string& time_string) {
+    
+  ros::Time end = ros::Time::now();
+  
   selector->episodeEnded();
+  
+  ofstream time_file((valueFileName+"_time").c_str(), ofstream::app);
+  if(executor->goalReached()) 
+    time_file << 1 << " " ;
+  else {
+    time_file << 0 << " " ;
+  }
+  time_file << (end - begin).toSec() << " " << time_string << endl;
+  time_file.close();
+  
+  
+  action_logger->taskCompleted();
 
   ofstream valueFileOut(valueFileName.c_str());
   selector->writeTo(valueFileOut);
   valueFileOut.close();
-
-  if (executor->goalReached()) {
-    ROS_INFO("Execution succeded");
-    as->setSucceeded();
-  } else {
-    ROS_INFO("Execution failed");
-    as->setAborted();
-  }
+  
 }
 
+void initiateTask(const bwi_kr_execution::ExecutePlanGoalConstPtr& plan, string &valueFileName, ros::Time& begin, char* time_string) {
+  
+  begin = ros::Time::now();
+  
+  vector<AspRule> goalRules;
 
+  transform(plan->aspGoal.begin(),plan->aspGoal.end(),back_inserter(goalRules),TranslateRule());
 
+  valueFileName = rulesToFileName(goalRules);
+  ifstream valueFileIn(valueFileName.c_str());
+  selector->readFrom(valueFileIn);
+  valueFileIn.close();
+  selector->saveValueInitialState(valueFileName + "_initial"); 
+  
+  action_logger->setFile((valueFileName+"_actions"));
+    
+  executor->setGoal(goalRules);
+  
+  //very practical C way of getting the current hour of day
+  time_t rawtime;
+  struct tm * timeinfo;
+  time (&rawtime);
+  timeinfo = localtime (&rawtime);
+  strftime (time_string,10,"%R",timeinfo);
+  
+}
 
+void executePlan(const bwi_kr_execution::ExecutePlanGoalConstPtr& plan, Server* as) {
+  
+  string valueFileName;
+  char time_string[10];
+  ros::Time begin;
+  
+  initiateTask(plan,valueFileName,begin,time_string); //does side effect on variables
+
+  ros::Rate loop(10);
+
+  while (!executor->goalReached() && !executor->failed() && as->isActive() && ros::ok()) {
+    
+    if (!as->isPreemptRequested()) {
+      executor->executeActionStep();
+    } else {
+      
+      as->setPreempted();
+      
+      if (executor->goalReached()) 
+        ROS_INFO("Preempted, but execution succeded");
+      else 
+        ROS_INFO("Preempted, execution aborted");
+      
+      //if there is no new goal completeTask will be called for this task at the end of this function
+      
+      if (as->isNewGoalAvailable()) {
+  
+        completeTask(valueFileName,begin,time_string);
+        
+        const bwi_kr_execution::ExecutePlanGoalConstPtr& newGoal = as->acceptNewGoal();
+
+        initiateTask(newGoal,valueFileName,begin,time_string);
+                
+      }
+
+    }
+    
+    loop.sleep();
+  }
+  
+  if (executor->goalReached()) {
+    ROS_INFO("Execution succeded");
+    if(as->isActive())
+      as->setSucceeded();
+  } else {
+    ROS_INFO("Execution failed");
+   if(as->isActive())
+    as->setAborted();
+  }
+  
+  completeTask(valueFileName,begin,time_string);
+
+}
 
 int main(int argc, char**argv) {
   ros::init(argc, argv, "action_executor");
   ros::NodeHandle n;
 
-  if (ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug)) {
-    ros::console::notifyLoggerLevelsChanged();
-  }
+//   if (ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug)) {
+//     ros::console::notifyLoggerLevelsChanged();
+//   }
 
   ros::NodeHandle privateNode("~");
   string domainDirectory;
@@ -189,29 +237,43 @@ int main(int argc, char**argv) {
   bool simulating;
   privateNode.param<bool>("simulation",simulating,false);
   
-  valueDirectory = ros::package::getPath("bwi_kr_execution") +((simulating)? "/values_simulation/" : "/values/" ) ;
+//  valueDirectory = ros::package::getPath("bwi_kr_execution") +((simulating)? "/values_simulation/" : "/values/" ) ;
+  valueDirectory = value_directory_base + ((simulating)? "values_simulation/" : "/values/" ); 
   boost::filesystem::create_directories(valueDirectory);
   
   ActionFactory::setSimulation(simulating);
 
   boost::filesystem::create_directories(queryDirectory);
   
-  AspKR *reasoner = new RemoteReasoner(MAX_N,queryDirectory,domainDirectory,actionMapToSet(ActionFactory::actions()),5);
+  AspKR *reasoner = new RemoteReasoner(MAX_N,queryDirectory,domainDirectory,actionMapToSet(ActionFactory::actions()),10);
   StaticFacts::retrieveStaticFacts(reasoner, domainDirectory);
 
-  TimeReward<QLearningActionSelector::State> *reward = new TimeReward<QLearningActionSelector::State>();
+  TimeReward<SarsaActionSelector::State> *reward = new TimeReward<SarsaActionSelector::State>();
   DefaultActionValue *timeValue = new DefaultTimes();
 
-  selector = new QLearningActionSelector(0.3, reward , reasoner,timeValue);
-
-  //need a pointer to the specific type for the observer
-  executor = new MultiPolicyExecutor(reasoner, reasoner,selector , ActionFactory::actions(),1.5);
-
+  SarsaParams params;
+  params.alpha = 0.2;
+  params.gamma = 0.9999;
+  params.lambda = 0.9;
+  params.epsilon = 0.2;
+  
+  selector = new SarsaActionSelector(reasoner,timeValue,reward,params);
+  
+  executor = new MultiPolicyExecutor(reasoner, reasoner,selector,ActionFactory::actions(),1.5);
   executor->addExecutionObserver(selector);
   executor->addExecutionObserver(reward);
 
+  //need a pointer to the specific type for the observer
+//   executor = new MultiPolicyExecutor(reasoner, reasoner,selector , ActionFactory::actions(),1.5);
+// 
+//   executor->addExecutionObserver(selector);
+//   executor->addExecutionObserver(reward);
+
   Observer observer;
   executor->addExecutionObserver(&observer);
+  
+  action_logger = new ActionLogger();
+  executor->addExecutionObserver(action_logger);
 
   Server server(privateNode, "execute_plan", boost::bind(&executePlan, _1, &server), false);
   server.start();
@@ -221,6 +283,7 @@ int main(int argc, char**argv) {
   server.shutdown();
 
   delete executor;
+  delete action_logger;
   delete selector;
   delete timeValue;
   delete reward;

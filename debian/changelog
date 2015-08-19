@@ -1,0 +1,19 @@
+ros-indigo-bwi-rqt-plugins (0.3.4-0trusty) trusty; urgency=high
+
+  * change segbot references to bwi_common (fixes #29 <https://github.com/utexas-bwi/bwi_common/issues/29>)
+  * Contributors: Jack O'Quin
+
+ -- Piyush Khandelwal <piyushk@gmail.com>  Wed, 19 Aug 2015 05:00:00 -0000
+
+ros-indigo-bwi-rqt-plugins (0.3.3-0trusty) trusty; urgency=high
+
+  * fix catkin warning about bwi_rqt_plugins headers
+  * wrap buttons around if too many.
+  * switched controls from qshortcut to key press/release events for faster response time.
+  * fixed image_view plugin to use settings for image topic name, since rqt cpp plugins don't support ros parametrization.
+  * adding a separate package for bwi_rqt_plugins.
+  * Contributors: Jack O'Quin, Piyush Khandelwal
+
+ -- Piyush Khandelwal <piyushk@gmail.com>  Wed, 05 Aug 2015 05:00:00 -0000
+
+

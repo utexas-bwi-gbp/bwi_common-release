@@ -1,0 +1,12 @@
+Source: ros-indigo-bwi-rqt-plugins
+Section: misc
+Priority: extra
+Maintainer: Piyush Khandelwal <piyushk@gmail.com>
+Build-Depends: debhelper (>= 9.0.0), ros-indigo-catkin, ros-indigo-cv-bridge, ros-indigo-image-transport, ros-indigo-rqt-gui, ros-indigo-rqt-gui-cpp, ros-indigo-sensor-msgs
+Homepage: http://ros.org/wiki/bwi_rqt_plugins
+Standards-Version: 3.9.2
+
+Package: ros-indigo-bwi-rqt-plugins
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-indigo-bwi-msgs, ros-indigo-cv-bridge, ros-indigo-image-transport, ros-indigo-python-qt-binding, ros-indigo-qt-gui, ros-indigo-rospy, ros-indigo-rqt-gui, ros-indigo-rqt-gui-cpp, ros-indigo-rqt-gui-py, ros-indigo-sensor-msgs
+Description: Displays a simple GUI to the user. The GUI is capable of displaying a simple message or image to the user, and ask a question. The message and question plugins are also written in this package.

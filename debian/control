@@ -1,0 +1,12 @@
+Source: ros-indigo-bwi-scavenger
+Section: misc
+Priority: extra
+Maintainer: Piyush Khandelwal <piyushk@gmail.com>
+Build-Depends: debhelper (>= 9.0.0), libboost-all-dev, libyaml-cpp-dev, ros-indigo-actionlib, ros-indigo-actionlib-msgs, ros-indigo-bwi-kr-execution, ros-indigo-catkin, ros-indigo-cv-bridge, ros-indigo-image-transport, ros-indigo-message-generation, ros-indigo-move-base-msgs, ros-indigo-pcl-ros, ros-indigo-roscpp, ros-indigo-std-msgs
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-indigo-bwi-scavenger
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libboost-all-dev, libyaml-cpp-dev, ros-indigo-actionlib, ros-indigo-actionlib-msgs, ros-indigo-bwi-kr-execution, ros-indigo-cv-bridge, ros-indigo-image-transport, ros-indigo-message-runtime, ros-indigo-move-base-msgs, ros-indigo-pcl-ros, ros-indigo-roscpp, ros-indigo-std-msgs
+Description: The bwi_scavenger package

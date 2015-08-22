@@ -1,3 +1,38 @@
+## bwi_common (indigo) - 0.3.5-0
+
+The packages in the `bwi_common` repository were released into the `indigo` distro by running `/usr/bin/bloom-release bwi_common -r indigo -t indigo` on `Sat, 22 Aug 2015 18:18:51 -0000`
+
+These packages were released:
+- `bwi_common`
+- `bwi_gazebo_entities`
+- `bwi_interruptable_action_server`
+- `bwi_kr_execution`
+- `bwi_logging`
+- `bwi_mapper`
+- `bwi_msgs`
+- `bwi_planning_common`
+- `bwi_rqt_plugins`
+- `bwi_scavenger`
+- `bwi_tasks`
+- `bwi_tools`
+- `stop_base`
+- `utexas_gdc`
+
+Version of package(s) in repository `bwi_common`:
+- upstream repository: https://github.com/utexas-bwi/bwi_common.git
+- release repository: https://github.com/utexas-bwi-gbp/bwi_common-release.git
+- rosdistro version: `0.3.4-0`
+- old version: `0.3.4-0`
+- new version: `0.3.5-0`
+
+Versions of tools used:
+- bloom version: `0.5.20`
+- catkin_pkg version: `0.2.8`
+- rosdep version: `0.11.2`
+- rosdistro version: `0.4.2`
+- vcstools version: `0.1.36`
+
+
 ## bwi_common (indigo) - 0.3.4-0
 
 The packages in the `bwi_common` repository were released into the `indigo` distro by running `/usr/bin/bloom-release bwi_common -r indigo -t indigo` on `Wed, 19 Aug 2015 18:23:15 -0000`

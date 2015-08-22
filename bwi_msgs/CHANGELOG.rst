@@ -2,6 +2,11 @@
 Changelog for package bwi_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.3.5 (2015-08-22)
+------------------
+* bwi_msgs: fix catkin lint problems (`#31 <https://github.com/utexas-bwi/bwi_common/issues/31>`_)
+* Contributors: Jack O'Quin
+
 0.3.4 (2015-08-19)
 ------------------
 

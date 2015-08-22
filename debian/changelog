@@ -1,0 +1,52 @@
+ros-indigo-bwi-kr-execution (0.3.5-0saucy) saucy; urgency=high
+
+  * bwi_kr_execution: fix catkin lint warning (#31 <https://github.com/utexas-bwi/bwi_common/issues/31>)
+  * Contributors: Jack O'Quin
+
+ -- Piyush Khandelwal <piyushk@gmail.com>  Sat, 22 Aug 2015 05:00:00 -0000
+
+ros-indigo-bwi-kr-execution (0.3.4-0saucy) saucy; urgency=high
+
+
+
+ -- Piyush Khandelwal <piyushk@gmail.com>  Wed, 19 Aug 2015 05:00:00 -0000
+
+ros-indigo-bwi-kr-execution (0.3.3-0saucy) saucy; urgency=high
+
+  * Indigo: change clingo dependency to gringo
+  * add a new node in bwi_kr_execution to keep updating states
+  * made current state query only return fluents at 0, perhaps safer for the learning executor
+  * upgrade to clingo 4.2.1 interface
+  * changed actasp to use clingo 4 syntax
+  * allowing AskPerson to work without the sound node
+  * adding a task for learning experiment, and a flag to the action theory to prevent the use of questions in tasks that don't need them
+  * adding time to the logging of actions and reward.
+  * Delete bwi_kr_execution_simulation.launch, closed issue #20 <https://github.com/utexas-bwi/bwi_common/issues/20>
+  * Contributors: Jack O'Quin, Matteo Leonetti, Shiqi Zhang, yuqian
+
+ -- Piyush Khandelwal <piyushk@gmail.com>  Wed, 05 Aug 2015 05:00:00 -0000
+
+ros-indigo-bwi-kr-execution (0.3.2-0saucy) saucy; urgency=high
+
+  * updated Clingo to use the current state correctly.
+  * removed output that was placed in for debugging. closes #17 <https://github.com/utexas-bwi/bwi_common/issues/17>.
+  * added missing directory installation. closes #16 <https://github.com/utexas-bwi/bwi_common/issues/16>
+  * Contributors: Piyush Khandelwal
+
+ -- Piyush Khandelwal <piyushk@gmail.com>  Tue, 24 Mar 2015 05:00:00 -0000
+
+ros-indigo-bwi-kr-execution (0.3.1-0saucy) saucy; urgency=high
+
+  * fixed broken link to costs.asp. costs are not being currently used.
+  * Contributors: Piyush Khandelwal
+
+ -- Piyush Khandelwal <piyushk@gmail.com>  Mon, 16 Mar 2015 05:00:00 -0000
+
+ros-indigo-bwi-kr-execution (0.3.0-0saucy) saucy; urgency=high
+
+  * Initial release - migration from bwi_experimental into bwi_common.
+  * Contributors: Matteo Leonetti, Jack O'Quin, Piyush Khandelwal
+
+ -- Piyush Khandelwal <piyushk@gmail.com>  Sun, 15 Mar 2015 05:00:00 -0000
+
+

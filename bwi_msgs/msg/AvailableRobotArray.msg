@@ -1,1 +1,0 @@
-AvailableRobot[] robots

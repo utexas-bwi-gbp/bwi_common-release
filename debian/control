@@ -1,0 +1,12 @@
+Source: ros-indigo-bwi-msgs
+Section: misc
+Priority: extra
+Maintainer: Piyush Khandelwal <piyushk@gmail.com>
+Build-Depends: debhelper (>= 9.0.0), ros-indigo-actionlib-msgs, ros-indigo-bwi-planning-common, ros-indigo-catkin, ros-indigo-message-generation, ros-indigo-std-msgs
+Homepage: http://ros.org/wiki/bwi_msgs
+Standards-Version: 3.9.2
+
+Package: ros-indigo-bwi-msgs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-indigo-actionlib-msgs, ros-indigo-bwi-planning-common, ros-indigo-message-runtime, ros-indigo-std-msgs
+Description: Contails messages used in the utexas-bwi codebase.

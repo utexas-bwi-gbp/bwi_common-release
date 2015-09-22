@@ -2,7 +2,7 @@
 <package format="2">
 
   <name>bwi_logging</name>
-  <version>0.3.6</version>
+  <version>0.3.7</version>
   <description>Logging package that creates ROS bag files</description>
 
   <author email="shiqi.zhang6@gmail.com">Shiqi Zhang</author>
@@ -15,6 +15,8 @@
   <url type="bugtracker">https://github.com/utexas-bwi/bwi_common/issues</url>
 
   <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>roslint</build_depend>
 
   <depend>cv_bridge</depend>
   <depend>geometry_msgs</depend>
@@ -29,5 +31,6 @@
 
   <test_depend>roslaunch</test_depend>
   <test_depend>rostest</test_depend>
+  <test_depend>rosunit</test_depend>
 
 </package>

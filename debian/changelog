@@ -1,8 +1,0 @@
-ros-indigo-bwi-joystick-teleop (0.3.8-0trusty) trusty; urgency=high
-
-  * Migrating bwi_joystick_teleop from bwi_experimental
-  * Contributors: Alex Gonzales, Rolando Fernandez
-
- -- Alex Gonzales <musigonzales@gmail.com>  Mon, 06 Jun 2016 05:00:00 -0000
-
-

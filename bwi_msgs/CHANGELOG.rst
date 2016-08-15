@@ -2,6 +2,9 @@
 Changelog for package bwi_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.3.10 (2016-08-15)
+-------------------
+
 0.3.9 (2016-08-05)
 ------------------
 * added LED control messages, services and actions

@@ -1,4 +1,0 @@
-bwi_msgs/LEDTestType type
----
-bool success
-string status

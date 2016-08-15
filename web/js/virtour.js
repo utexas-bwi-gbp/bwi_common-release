@@ -132,7 +132,7 @@ function createIdentity() {
 }
 
 function createSegbots() {
-  segbots["localhost"] = createSegbot("localhost", "127.0.0.1", ROSBRIDGEPORT, MJPEGSERVERPORT);
+  //segbots["localhost"] = createSegbot("localhost", "127.0.0.1", ROSBRIDGEPORT, MJPEGSERVERPORT);
   //segbots["hypnotoad"] = createSegbot("hypnotoad", "hypnotoad.csres.utexas.edu", ROSBRIDGEPORT, MJPEGSERVERPORT);
 
   var server = "http://nixons-head.csres.utexas.edu:7979/hostsalivejson";
@@ -142,9 +142,14 @@ function createSegbots() {
   }
   log("Pinging dns server");
   $.getJSON(server, function(data) {
+    var available = false;
     $.each(data, function(key, val) {
       segbots[key] = createSegbot(key, val, ROSBRIDGEPORT, MJPEGSERVERPORT);
+      available = true;
     });
+    if (!available) {
+      $(".available_robots").html("<h3>No robots available at this time</h3>");
+    }
   }).error(function(err) { error("Failed to ping DNS server"); });
 }
 
@@ -407,15 +412,14 @@ function requestLocation(locationStr) {
   goToLocationClient.callService(request, function(result) {
     log('Result for requestLocation service call on '
       + goToLocationClient.name + ': ' + result.result);
-    if (result.result == 1) { //success
-      alert("success");
+    if (result.result == 1) { // success
+      alert("Done going to location!");
     } else if (result.result == -1) { // terminated
-      alert("terminated");
+      log("requestLocation terminated");
     } else if (result.result == -2) { // preempted
-      alert("preempted");
+      log("requestLocation preempted");
     } else if (result.result == -3) { // aborted
-      alert("aborted");
-    } else {
+      log("requestLocation aborted");
     }
   });
 }
@@ -426,15 +430,14 @@ function requestBesideLocation(locationStr) {
   goBesideLocationClient.callService(request, function(result) {
     log('Result for requesBesidetLocation service call on '
       + goToLocationClient.name + ': ' + result.result);
-    if (result.result == 1) { //success
-      alert("success");
+    if (result.result == 1) { // success
+      alert("Done going beside location!");
     } else if (result.result == -1) { // terminated
-      alert("terminated");
+      log("goBesideLocation terminated");
     } else if (result.result == -2) { // preempted
-      alert("preempted");
+      log("goBesideLocation preempted");
     } else if (result.result == -3) { // aborted
-      alert("aborted");
-    } else {
+      log("goBesideLocation aborted");
     }
   });
 }

@@ -1,5 +1,0 @@
-MultiLevelMapPoint from_point
-MultiLevelMapPoint to_point
-float64 traversal_cost
-string forward_message
-string reverse_message

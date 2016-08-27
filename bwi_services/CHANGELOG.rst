@@ -2,6 +2,9 @@
 Changelog for package bwi_services
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.3.11 (2016-08-27)
+-------------------
+
 0.3.10 (2016-08-15)
 -------------------
 * bwi_services: fix catkin_lint errors, missing installs (`#70 <https://github.com/utexas-bwi/bwi_common/issues/70>`_)

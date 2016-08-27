@@ -1,6 +1,12 @@
 Change history
 ==============
 
+0.3.11 (2016-08-27)
+-------------------
+* Install launch file in bwi_joystick_teleop
+* Add parameter to select Xbox or PS4 mappings
+* Contributors: Nicu Stiurca
+
 0.3.10 (2016-08-15)
 -------------------
 

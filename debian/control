@@ -1,0 +1,12 @@
+Source: ros-indigo-multi-level-map-utils
+Section: misc
+Priority: extra
+Maintainer: Piyush Khandelwal <piyushk@gmail.com>
+Build-Depends: debhelper (>= 9.0.0), libboost-all-dev, ros-indigo-catkin
+Homepage: http://ros.org/wiki/multi_level_map_utils
+Standards-Version: 3.9.2
+
+Package: ros-indigo-multi-level-map-utils
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-indigo-bwi-tools, ros-indigo-geometry-msgs, ros-indigo-multi-level-map-msgs, ros-indigo-nav-msgs, ros-indigo-python-qt-binding, ros-indigo-qt-gui, ros-indigo-rospy, ros-indigo-rqt-gui, ros-indigo-rqt-gui-py
+Description: Contains utilities like a level multiplexer, a level selector and other utility functions.

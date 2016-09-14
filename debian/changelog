@@ -1,0 +1,34 @@
+ros-indigo-bwi-joystick-teleop (0.3.12-0trusty) trusty; urgency=high
+
+
+
+ -- Alex Gonzales <musigonzales@gmail.com>  Wed, 14 Sep 2016 05:00:00 -0000
+
+ros-indigo-bwi-joystick-teleop (0.3.11-0trusty) trusty; urgency=high
+
+  * Install launch file in bwi_joystick_teleop
+  * Add parameter to select Xbox or PS4 mappings
+  * Contributors: Nicu Stiurca
+
+ -- Alex Gonzales <musigonzales@gmail.com>  Sat, 27 Aug 2016 05:00:00 -0000
+
+ros-indigo-bwi-joystick-teleop (0.3.10-0trusty) trusty; urgency=high
+
+
+
+ -- Alex Gonzales <musigonzales@gmail.com>  Mon, 15 Aug 2016 05:00:00 -0000
+
+ros-indigo-bwi-joystick-teleop (0.3.9-0trusty) trusty; urgency=high
+
+
+
+ -- Alex Gonzales <musigonzales@gmail.com>  Fri, 05 Aug 2016 05:00:00 -0000
+
+ros-indigo-bwi-joystick-teleop (0.3.8-0trusty) trusty; urgency=high
+
+  * Migrating bwi_joystick_teleop from bwi_experimental
+  * Contributors: Alex Gonzales, Rolando Fernandez
+
+ -- Alex Gonzales <musigonzales@gmail.com>  Mon, 06 Jun 2016 05:00:00 -0000
+
+

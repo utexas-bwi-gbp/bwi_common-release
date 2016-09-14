@@ -1,0 +1,90 @@
+ros-indigo-bwi-kr-execution (0.3.12-0saucy) saucy; urgency=high
+
+
+
+ -- Piyush Khandelwal <piyushk@gmail.com>  Wed, 14 Sep 2016 05:00:00 -0000
+
+ros-indigo-bwi-kr-execution (0.3.11-0saucy) saucy; urgency=high
+
+
+
+ -- Piyush Khandelwal <piyushk@gmail.com>  Sat, 27 Aug 2016 05:00:00 -0000
+
+ros-indigo-bwi-kr-execution (0.3.10-0saucy) saucy; urgency=high
+
+  * added elevators
+  * added 4th floor map
+  * Contributors: Nathan John
+
+ -- Piyush Khandelwal <piyushk@gmail.com>  Mon, 15 Aug 2016 05:00:00 -0000
+
+ros-indigo-bwi-kr-execution (0.3.9-0saucy) saucy; urgency=high
+
+  * Increased planner timeout from 20 seconds to 40 seconds to account
+    for longer planning times for traveling between floors.
+  * Modifed elevator domain fact file and added rooms for 1st Floor GDC to navigation fact file..
+  * Added first floor map information to navigation_facts and elevator_facts.
+  * Fixed static law for facing and beside door, D1 was not defined as a door.
+  * Fixed errors in 3rd floor objects. Added 2nd floor objects and rest of 3rd floor objects.
+  * Created action files for goto action and added goto action to asp_fomatter.
+  * Updated door approach points for 3rd floor map
+  * Added missing locations and fixed doors in navigation_facts
+  * Updated ASP fact files with addtional locations from updated 3rd floor map.
+  * Contributors: FernandezR
+
+ -- Piyush Khandelwal <piyushk@gmail.com>  Fri, 05 Aug 2016 05:00:00 -0000
+
+ros-indigo-bwi-kr-execution (0.3.8-0saucy) saucy; urgency=high
+
+  * fix broken clingo dependency (#52 <https://github.com/utexas-bwi/bwi_common/issues/52>)
+  * moved disabling static map from bwi_kr_execution to
+    segbot_logical_translator, where it should have been in the first
+    place.
+  * the gothrough action disables the global costmap. the callelevator
+    action only expects the door in front of it to open.
+  * added simulated change floor action. added hack to make plan shorter
+    when using the elevator, and the other door opens.
+  * updated simulated calls that open the elevator doors to
+    automatically close those doors.
+  * added a simulation change floor action. Should be ready for real
+    robot testing now.
+  * added missing actions that won't be displayed in clingo output
+  * fixing planning issues with elevators
+  * some more updates to bwi_kr_execution. fixing some merge issues.
+  * merged with yuqian branch.
+  * updated navigation facts for simulation.
+  * Added additional facts for 2nd floor to navigation facts.
+  * Changed location of elavator doors on 2nd floor to l2_200 from
+    l2_302.
+  * Fixed static facts bug, by adding ``%#show hasdoor`` to
+    elavator_facts. Fixed navigation bug on 2nd floor, by adding 2nd
+    floor locations to navigation_facts.
+  * Clingo4 code fixes for current robot elevator code
+  * Contributors: Rolando Fernandez, Jack O'Quin, Piyush Khandelwal, Yuqian Jiang
+
+ -- Piyush Khandelwal <piyushk@gmail.com>  Mon, 06 Jun 2016 05:00:00 -0000
+
+ros-indigo-bwi-kr-execution (0.3.2-0saucy) saucy; urgency=high
+
+  * updated Clingo to use the current state correctly.
+  * removed output that was placed in for debugging. closes #17 <https://github.com/utexas-bwi/bwi_common/issues/17>.
+  * added missing directory installation. closes #16 <https://github.com/utexas-bwi/bwi_common/issues/16>
+  * Contributors: Piyush Khandelwal
+
+ -- Piyush Khandelwal <piyushk@gmail.com>  Tue, 24 Mar 2015 05:00:00 -0000
+
+ros-indigo-bwi-kr-execution (0.3.1-0saucy) saucy; urgency=high
+
+  * fixed broken link to costs.asp. costs are not being currently used.
+  * Contributors: Piyush Khandelwal
+
+ -- Piyush Khandelwal <piyushk@gmail.com>  Mon, 16 Mar 2015 05:00:00 -0000
+
+ros-indigo-bwi-kr-execution (0.3.0-0saucy) saucy; urgency=high
+
+  * Initial release - migration from bwi_experimental into bwi_common.
+  * Contributors: Matteo Leonetti, Jack O'Quin, Piyush Khandelwal
+
+ -- Piyush Khandelwal <piyushk@gmail.com>  Sun, 15 Mar 2015 05:00:00 -0000
+
+
